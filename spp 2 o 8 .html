@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strong Poing Progress</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1A2A6C;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #1A2A6C;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 24px;
+        }
+        .card-opd {
+            display: flex;
+            background-color: white;
+            border-radius: 10px;
+            margin: 10px auto;
+            padding: 15px;
+            cursor: pointer;
+            align-items: center;
+            width: 90%;
+            max-width: 960px;
+            box-sizing: border-box;
+        }
+        .card-opd .icon {
+            font-size: 40px;
+            margin-right: 20px;
+        }
+        .card-opd .opd-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .opd-info div {
+            margin-bottom: 5px;
+        }
+        .activity-header {
+            background-color: #f1f1f1;
+            margin-top: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+            align-items: center;
+            margin: 10px auto;
+            width: 90%;
+            max-width: 960px;
+            box-sizing: border-box;
+        }
+        .activity-title {
+            font-weight: bold;
+            font-size: 16px;
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+        .toggle-icon {
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .accordion-content {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            width: 90%;
+            margin: 10px auto;
+            max-width: 960px;
+            box-sizing: border-box;
+        }
+        .accordion-content.open {
+            display: block;
+        }
+        .label-bold {
+            font-weight: bold;
+        }
+
+        /* Progress bar styles */
+        .progress-bar-container {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .progress-bar.fisik {
+            background-color: orange;
+        }
+
+        .progress-bar.keuangan {
+            background-color: green;
+        }
+
+        /* Teks di dalam progress bar */
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    Strong Poing Progress
+</div>
+
+<!-- Dinas Bina Marga -->
+<div class="card-opd" data-opd="bina-marga" onclick="toggleActivities(this)">
+    <div class="icon">🚧</div>
+    <div class="opd-info">
+        <div>Dinas Bina Marga & Konstruksi</div>
+        <div>Total Anggaran: Rp. 417.382.258.930</div>
+        <div>Jumlah Kegiatan: 2</div>
+    </div>
+</div>
+
+<!-- Kegiatan Dinas Bina Marga -->
+<div class="activities-container" id="activities-bina-marga"></div>
+
+<!-- Dinas Sumberdaya Air -->
+<div class="card-opd" data-opd="sumberdaya-air" onclick="toggleActivities(this)">
+    <div class="icon">💧</div>
+    <div class="opd-info">
+        <div>Dinas Sumberdaya Air</div>
+        <div>Total Anggaran: Rp. 161.808.109.180</div>
+        <div>Jumlah Kegiatan: 2</div>
+    </div>
+</div>
+
+<!-- Kegiatan Dinas Sumberdaya Air -->
+<div class="activities-container" id="activities-sumberdaya-air"></div>
+
+<!-- Dinas Perumahan -->
+<div class="card-opd" data-opd="perumahan" onclick="toggleActivities(this)">
+    <div class="icon">🏡</div>
+    <div class="opd-info">
+        <div>Dinas Perumahan</div>
+        <div>Total Anggaran: Rp. 18.050.781.300</div>
+        <div>Jumlah Kegiatan: 2</div>
+    </div>
+</div>
+
+<!-- Kegiatan Dinas Perumahan -->
+<div class="activities-container" id="activities-perumahan"></div>
+
+<script>
+    // Data kegiatan untuk masing-masing OPD
+    const activitiesData = {
+        "bina-marga": [
+            {
+                name: "Rekonstruksi Jalan",
+                budget: "Rp. 393.233.458.930",
+                weighted: "0.7262",
+                kajian: "Tidak Diperlukan",
+                desain: "Selesai",
+                pengadaan: "On Progress",
+                pelaksanaan: "Belum Terlaksana",
+                status: "Keterlambatan proses, (1)Untuk paket MK; seluruh paket telah terdapat pemenang, (2)Untuk paket fisik masih tender.",
+                fisik: 0.19, // Persentase fisik
+                anggaranPersen: 0, // Persentase keuangan
+                keteranganTambahan: "Keterlambatan proses tender fisik, akan mempengaruhi masa pelaksanaan dan penyerapan anggaran tahun 2025",
+                rencanaAksi: "Melanjutkan proses tender."
+            },
+            {
+                name: "Pembangunan Jembatan",
+                budget: "Rp. 24.148.800.000",
+                weighted: "0.0446",
+                kajian: "Tidak Diperlukan",
+                desain: "Selesai",
+                pengadaan: "Selesai",
+                pelaksanaan: "On Progress",
+                status: "On track, 3 paket telah terkontrak.",
+                fisik: 0.34, // Persentase fisik
+                anggaranPersen: 0.1711, // Persentase keuangan
+                keteranganTambahan: "Belum terjadi deviasi progres signifikan",
+                rencanaAksi: "Pelaksanaan Fisik berjalan."
+            }
+        ],
+        "sumberdaya-air": [
+            {
+                name: "Rehabilitasi Daerah Irigasi (D.I)",
+                budget: "Rp. 82.304.109.180",
+                weighted: "0.2962",
+                kajian: "Tidak Diperlukan",
+                desain: "Selesai",
+                pengadaan: "On Progress",
+                pelaksanaan: "Belum Terlaksana",
+                status: "Proses Review PBJ",
+                fisik: 0.00, // Persentase fisik
+                anggaranPersen: 0, // Persentase keuangan
+                keteranganTambahan: "Proses Review PBJ untuk 4 Paket pekerjaan Desain and Build",
+                rencanaAksi: "Proses Review PBJ"
+            },
+            {
+                name: "Pembangunan Spam",
+                budget: "Rp. 79.504.000.000",
+                weighted: "0.2861",
+                kajian: "Selesai",
+                desain: "Selesai",
+                pengadaan: "Selesai",
+                pelaksanaan: "On Progress",
+                status: "Tahap Pelaksanaan Pekerjaan Pemasangan Pipa dan Accessories",
+                fisik: 0.325, // Persentase fisik
+                anggaranPersen: 0, // Persentase keuangan
+                keteranganTambahan: "Pekerjaan pemasangan pipa di STO 6 ke STO 7",
+                rencanaAksi: "Lanjutan Pemasangan Pipa STO selanjutnya"
+            }
+        ],
+        "perumahan": [
+            {
+                name: "Program Pengadaan Tanah untuk Kepentingan Umum",
+                budget: "Rp. 14.850.781.300",
+                weighted: "0.5752",
+                kajian: "Berproses",
+                desain: "Berproses",
+                pengadaan: "Belum Terlaksana",
+                pelaksanaan: "Belum Terlaksana",
+                status: "Konsultan mencetak dokumen perencanaan untuk diajukan kepada Kadis Perkimtan",
+                fisik: 0.43, // Persentase fisik
+                anggaranPersen: 0, // Persentase keuangan
+                keteranganTambahan: "Konsultan mencetak/print dokumen perencanaan untuk diajukan penetapan kepada Kadis Perkimtan.",
+                rencanaAksi: "Konsultan mencetak/print DPPT untuk diajukan kepada Kadis Perkimtan untuk dilakukan penetapan DPPT"
+            }
+        ]
+    };
+
+    // Fungsi untuk mengganti status kegiatan
+    function toggleActivities(opdCard) {
+        const opd = opdCard.getAttribute('data-opd');
+        const activitiesContainer = document.getElementById('activities-' + opd);
+
+        if (activitiesContainer.innerHTML === "") {
+            renderActivities(opd, activitiesContainer);
+        } else {
+            activitiesContainer.innerHTML = "";
+        }
+    }
+
+    // Fungsi untuk render kegiatan
+    function renderActivities(opd, container) {
+        const activities = activitiesData[opd];
+        activities.forEach((activity, index) => {
+            const activityCard = document.createElement('div');
+            activityCard.classList.add('activity-header');
+            activityCard.innerHTML = `
+                <div class="activity-title">${index + 1}. ${activity.name}</div>
+                <div>${activity.budget}</div>
+                <div class="toggle-icon">▼</div>
+            `;
+
+            const progressFisik = (activity.fisik * 100).toFixed(2); // Konversi ke % dengan 2 angka desimal
+            const progressKeuangan = (activity.anggaranPersen * 100).toFixed(2); // Konversi ke % dengan 2 angka desimal
+
+            const progressBarFisik = `
+                <div class="progress-bar-container">
+                    <div class="progress-bar fisik" style="width: ${progressFisik}%">
+                        <span class="progress-text">${progressFisik}%</span>
+                    </div>
+                </div>
+            `;
+            const progressBarKeuangan = `
+                <div class="progress-bar-container">
+                    <div class="progress-bar keuangan" style="width: ${progressKeuangan}%">
+                        <span class="progress-text">${progressKeuangan}%</span>
+                    </div>
+                </div>
+            `;
+
+            const detailDiv = document.createElement('div');
+            detailDiv.classList.add('accordion-content');
+            detailDiv.innerHTML = `
+                <div><span class="label-bold">% Weighted:</span> ${activity.weighted}</div>
+                <div><span class="label-bold">Kajian Awal:</span> ${activity.kajian}</div>
+                <div><span class="label-bold">Desain / DED:</span> ${activity.desain}</div>
+                <div><span class="label-bold">Proses Pengadaan Fisik:</span> ${activity.pengadaan}</div>
+                <div><span class="label-bold">Pelaksanaan:</span> ${activity.pelaksanaan}</div>
+                <div><span class="label-bold">Status:</span> ${activity.status}</div>
+                <div><span class="label-bold">% Fisik:</span> ${activity.fisik}</div>
+                ${progressBarFisik}
+                <div><span class="label-bold">% Anggaran:</span> ${activity.anggaranPersen}</div>
+                ${progressBarKeuangan}
+                <div><span class="label-bold">Keterangan Tambahan:</span> ${activity.keteranganTambahan}</div>
+                <div><span class="label-bold">Rencana Aksi:</span> ${activity.rencanaAksi}</div>
+            `;
+
+            activityCard.addEventListener('click', () => {
+                const isOpen = detailDiv.classList.contains('open');
+                if (isOpen) {
+                    detailDiv.classList.remove('open');
+                    activityCard.querySelector('.toggle-icon').innerHTML = "▼";
+                } else {
+                    detailDiv.classList.add('open');
+                    activityCard.querySelector('.toggle-icon').innerHTML = "▲";
+                }
+            });
+
+            container.appendChild(activityCard);
+            container.appendChild(detailDiv);
+        });
+    }
+</script>
+
+</body>
+</html>
